@@ -33,9 +33,6 @@ export const Articles: FC = memo(() => {
         <Link as={RouterLink} to="/create" color="blue.500">
           新規作成画面
         </Link>
-        <Link href="/logout" color="blue.500">
-          ログアウト
-        </Link>
       </Stack>
       {articles.map((article) => (
         <Box
