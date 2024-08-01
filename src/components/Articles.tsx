@@ -50,7 +50,7 @@ export const Articles: FC = memo(() => {
             {article.title}
           </Heading>
           <Stack direction="row" spacing={4} mb={2}>
-            <Link href="/edit" color="blue.500">
+            <Link as={RouterLink} to={`/${article.id}/update`} color="blue.500">
               編集
             </Link>
             <Link href="/delete" color="blue.500">
