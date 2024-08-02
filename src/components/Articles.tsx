@@ -1,7 +1,15 @@
 import axios from "axios";
 import { FC, memo, useEffect, useState } from "react";
-import { Box, Divider, Heading, Link, Stack, Text } from "@chakra-ui/react";
-import { Link as RouterLink } from "react-router-dom";
+import {
+  Box,
+  Button,
+  Divider,
+  Heading,
+  Link,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 
 type Article = {
   id: number;
@@ -12,6 +20,7 @@ type Article = {
 
 export const Articles: FC = memo(() => {
   const [articles, setArticles] = useState<Array<Article>>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
@@ -23,6 +32,17 @@ export const Articles: FC = memo(() => {
         console.error("There was an error fetching the posts!", error);
       });
   }, []);
+
+  const handleDelete = (id: number) => {
+    axios
+      .delete(`http://127.0.0.1:5000/${id}/delete`)
+      .then(() => {
+        navigate("/");
+      })
+      .catch((error) => {
+        console.error("There was an error deleting the article!", error);
+      });
+  };
 
   return (
     <Box maxW="800px" mx="auto" p={4}>
@@ -50,9 +70,14 @@ export const Articles: FC = memo(() => {
             <Link as={RouterLink} to={`/${article.id}/update`} color="blue.500">
               編集
             </Link>
-            <Link href="/delete" color="blue.500">
+            <Button
+              variant="link"
+              color="blue.500"
+              fontWeight="normal"
+              onClick={() => handleDelete(article.id)}
+            >
               削除
-            </Link>
+            </Button>
           </Stack>
           <Text fontSize="sm" color="gray.500" mb={4}>
             作成日時：{new Date(article.created_at).toLocaleString()}
